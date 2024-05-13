@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+projectname='onlinecourseplatform'
+username='onlineeducation'
+echo "Initializing database"
+sudo -u postgres psql -c "CREATE USER $username WITH PASSWORD '1234';"
+sudo -u postgres psql -c "CREATE DATABASE $projectname"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $projectname TO $username;"
+sudo -u postgres psql -d $projectname < schema.sql
+sudo -u postgres psql -d $projectname < seed.sql
+sudo -u postgres psql -d $projectname -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to $username;"
+sudo -u postgres psql -d $projectname -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public to $username;"
+sudo -u postgres psql -d $projectname -c "GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public to $username;"
